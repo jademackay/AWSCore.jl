@@ -111,7 +111,9 @@ function localhost_is_ec2()
 
     @static if VERSION < v"0.7.0-DEV" ? is_unix() : Sys.isunix()
         return isfile("/sys/hypervisor/uuid") &&
-               String(read("/sys/hypervisor/uuid",3)) == "ec2"
+            String(read("/sys/hypervisor/uuid",3)) == "ec2" ||
+            isfile("/sys/devices/virtual/dmi/id/product_uuid") &&
+            String(read("/sys/devices/virtual/dmi/id/product_uuid",3)) == "EC2"
     end
 
     return false
